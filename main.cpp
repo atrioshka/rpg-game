@@ -8,34 +8,35 @@ int main() {
 	settings.antialiasingLevel = 8;
 	sf::RenderWindow window(sf::VideoMode(800, 600), "RPG Game", sf::Style::Default, settings);
 
-	//Defines a 120x50 rectangle
-	sf::RectangleShape rectangle(sf::Vector2f(240.f, 100.f));
-	rectangle.setFillColor(sf::Color::White);
-	rectangle.setPosition(sf::Vector2f(200, 250));
-	rectangle.setOutlineThickness(6);
-	rectangle.setOutlineColor(sf::Color::Red);
-	//rectangle.setOrigin(rectangle.getSize() / 2.0f);
-	rectangle.setRotation(45);
-
-	//Defines a triangle
-	sf::CircleShape triange(80.f, 3);
-	triange.setFillColor(sf::Color::Magenta);
-	triange.setPosition(sf::Vector2f(0, 10));
-
-	//Defines a diamond
-	sf::CircleShape diamond(80.f, 4);
-	diamond.setFillColor(sf::Color::Yellow);
-	diamond.setPosition(sf::Vector2f(200, 10));
-
-	//Defines an octogon
-	sf::CircleShape octogon(80.f, 8);
-	octogon.setFillColor(sf::Color::Green);
-	octogon.setPosition(sf::Vector2f(400, 10));
-
 	//----------------- INITIALIZE ----------------------
+
+	//----------------- LOAD ----------------------------
+	sf::Texture playerTexture;
+	sf::Sprite playerSprite;
+
+	if (playerTexture.loadFromFile("Assets/Player/Textures/player.png")) {
+		
+		std::cout << "Player Image Loaded!" << std::endl;
+
+		playerSprite.setTexture(playerTexture);
+
+		//Coordinates for the character sprite on the 576x256 pixel sprite sheet
+		//Each character square is 64x64 pixels
+		int xIndex = 0;
+		int yIndex = 3;
+
+		//Int (x, y, width, height)
+		playerSprite.setTextureRect(sf::IntRect(xIndex * 64, yIndex * 64, 64, 64));
+		playerSprite.setScale(sf::Vector2f(3, 3));
+	
+	}
+	else {
+		std::cout << "Player Image Failed To Load!" << std::endl;
+	}
+	//----------------- LOAD -----------------------------
 	
 
-	//main game loop
+	//----------------- (START) MAIN GAME LOOP -------------------
 	while (window.isOpen()) {
 
 		//----------------- UPDATE --------------------
@@ -46,18 +47,36 @@ int main() {
 				window.close();
 			}
 		}
+
+		//Initialize player position
+		sf::Vector2f position = playerSprite.getPosition();
+
+		//Character moves one unit to the right (FORWARD)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			playerSprite.setPosition(position + sf::Vector2f(1, 0));
+		}
+		//Character moves one unit to the left (BACKWARDS)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+			playerSprite.setPosition(position + sf::Vector2f(-1, 0));
+		}
+		//Character moves one unit UP
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+			playerSprite.setPosition(position + sf::Vector2f(0, -1));
+		}
+		//Character moves one unit DOWN
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+			playerSprite.setPosition(position + sf::Vector2f(0, 1));
+		}
 		//----------------- UPDATE --------------------
 
 
 		//----------------- DRAW ----------------------
 		window.clear(sf::Color::Black);
-		window.draw(rectangle);
-		window.draw(triange);
-		window.draw(diamond);
-		window.draw(octogon);
+		window.draw(playerSprite);
 		window.display();
 		//----------------- DRAW ----------------------
 	}
+	//----------------- (END) MAIN GAME LOOP -------------------
 
 	return 0;
 }
