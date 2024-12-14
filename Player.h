@@ -6,8 +6,8 @@ class Player
 private:
 	sf::Texture texture;
 	std::vector<sf::RectangleShape> ammo;
-	float ammoSpeed = 0.5f;
-	float playerSpeed = 2.0f;
+	float ammoSpeed;
+	float playerSpeed;
 	sf::RectangleShape boundingRectangle;
 	sf::Vector2i size;
 
@@ -15,6 +15,9 @@ public:
 	sf::Sprite sprite;
 
 public:
+	Player();
+	~Player();
+
 	//Called once per app start
 	void Initialize();
 	void Load();

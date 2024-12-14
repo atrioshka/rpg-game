@@ -2,6 +2,9 @@
 #include "Player.h"
 #include "GameMath.h"
 
+Player::Player() : ammoSpeed(0.5f), playerSpeed(2.0f) {}
+Player::~Player(){}
+
 void Player::Initialize() {
 	boundingRectangle.setFillColor(sf::Color::Transparent);
 	boundingRectangle.setOutlineColor(sf::Color::Red);
