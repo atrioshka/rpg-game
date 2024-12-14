@@ -3,7 +3,10 @@
 #include "GameMath.h"
 
 void Player::Initialize() {
-
+	boundingRectangle.setFillColor(sf::Color::Transparent);
+	boundingRectangle.setOutlineColor(sf::Color::Red);
+	boundingRectangle.setOutlineThickness(1.0);
+	size = sf::Vector2i(64, 64);
 }
 
 void Player::Load() {
@@ -20,8 +23,11 @@ void Player::Load() {
 		int yIndex = 3;
 
 		//Int (x, y, width, height)
-		sprite.setTextureRect(sf::IntRect(xIndex * 64, yIndex * 64, 64, 64));
+		sprite.setTextureRect(sf::IntRect(xIndex * size.x, yIndex * size.y, size.x, size.y));
 		sprite.setScale(sf::Vector2f(2, 2));
+
+		//Sets bounding rectangle to the size of the scaled sprite
+		boundingRectangle.setSize(sf::Vector2f(size.x * sprite.getScale().x, size.y * sprite.getScale().y));
 
 	}
 	else {
@@ -55,15 +61,24 @@ void Player::Update(Enemy &enemy) {
 		int i = ammo.size() - 1;
 		ammo[i].setPosition(sprite.getPosition());
 	}
+
 	for (size_t i = 0; i < ammo.size(); i++) {
 		sf::Vector2f ammoDirection = enemy.sprite.getPosition() - ammo[i].getPosition();
 		ammoDirection = GameMath::NormalizeVector(ammoDirection);
 		ammo[i].setPosition(ammo[i].getPosition() + ammoDirection * ammoSpeed);
 	}
+
+	boundingRectangle.setPosition(position);
+
+	//Detects if the player collides with the enemy
+	if (GameMath::RectangleCollides(sprite.getGlobalBounds(), enemy.sprite.getGlobalBounds())) {
+		std::cout << "Collision!" << std::endl;
+	}
 }
 
 void Player::Draw(sf::RenderWindow &window) {
 	window.draw(sprite);
+	window.draw(boundingRectangle);
 
 	for (size_t i = 0; i < ammo.size(); i++) {
 		window.draw(ammo[i]);
