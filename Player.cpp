@@ -36,24 +36,24 @@ void Player::Load() {
 	}
 }
 
-void Player::Update(Enemy &enemy) {
+void Player::Update(float deltaTime, Enemy &enemy) {
 	sf::Vector2f position = sprite.getPosition();
 
 	//Character moves one unit to the right (FORWARD)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		sprite.setPosition(position + sf::Vector2f(1, 0));
+		sprite.setPosition(position + sf::Vector2f(1, 0) * playerSpeed * deltaTime);
 	}
 	//Character moves one unit to the left (BACKWARDS)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-		sprite.setPosition(position + sf::Vector2f(-1, 0));
+		sprite.setPosition(position + sf::Vector2f(-1, 0) * playerSpeed * deltaTime);
 	}
 	//Character moves one unit UP
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-		sprite.setPosition(position + sf::Vector2f(0, -1));
+		sprite.setPosition(position + sf::Vector2f(0, -1) * playerSpeed * deltaTime);
 	}
 	//Character moves one unit DOWN
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		sprite.setPosition(position + sf::Vector2f(0, 1));
+		sprite.setPosition(position + sf::Vector2f(0, 1) * playerSpeed * deltaTime);
 	}
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -65,7 +65,7 @@ void Player::Update(Enemy &enemy) {
 	for (size_t i = 0; i < ammo.size(); i++) {
 		sf::Vector2f ammoDirection = enemy.sprite.getPosition() - ammo[i].getPosition();
 		ammoDirection = GameMath::NormalizeVector(ammoDirection);
-		ammo[i].setPosition(ammo[i].getPosition() + ammoDirection * ammoSpeed);
+		ammo[i].setPosition(ammo[i].getPosition() + ammoDirection * ammoSpeed * deltaTime);
 	}
 
 	boundingRectangle.setPosition(position);

@@ -23,10 +23,13 @@ int main() {
 	enemy.Load();
 	//----------------- LOAD -----------------------------
 
+	sf::Clock clock;
 	//----------------- (START) MAIN GAME LOOP -----------
 
 	while (window.isOpen()) {
 
+		sf::Time deltaTimer = clock.restart();
+		float deltaTime = deltaTimer.asMilliseconds();
 		sf::Event event;
 
 		//----------------- UPDATE --------------------
@@ -36,8 +39,8 @@ int main() {
 			}
 		}
 		//Initialize player and enemy positions
-		enemy.Update();
-		player.Update(enemy);
+		enemy.Update(deltaTime);
+		player.Update(deltaTime, enemy);
 		//----------------- UPDATE --------------------
 
 		//----------------- DRAW ----------------------

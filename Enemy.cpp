@@ -27,7 +27,7 @@ void Enemy::Load() {
 		std::cout << "Enemy Image has failed to load!" << std::endl;
 	}
 }
-void Enemy::Update() {
+void Enemy::Update(float deltaTime) {
 	sf::Vector2f position = sprite.getPosition();
 	boundingRectangle.setPosition(position);
 }

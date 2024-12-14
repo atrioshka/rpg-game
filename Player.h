@@ -7,6 +7,7 @@ private:
 	sf::Texture texture;
 	std::vector<sf::RectangleShape> ammo;
 	float ammoSpeed = 0.5f;
+	float playerSpeed = 2.0f;
 	sf::RectangleShape boundingRectangle;
 	sf::Vector2i size;
 
@@ -18,7 +19,7 @@ public:
 	void Initialize();
 	void Load();
 	//called once per frame
-	void Update(Enemy &enemy);
+	void Update(float deltaTime, Enemy &enemy);
 	void Draw(sf::RenderWindow &window);
 };
 
